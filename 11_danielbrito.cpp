@@ -42,6 +42,9 @@ int main(){
     
     m[i] = (int*)malloc(n*sizeof(int));
   }
+  
+  // This vector will be used to store the sum of the values of each column:
+  vector<int> subtotal(n, 0);
 
   // Receiving the values and storing them in the matrix.
   // Notice that we use 'fat-1' because there is a missing permutation.
@@ -50,6 +53,9 @@ int main(){
     for (j=0; j<n; j++){
       
       cin >> m[i][j];
+      
+      // Adding up the values of each column:
+      subtotal[j] += m[i][j];
     }
   }
   
@@ -59,22 +65,13 @@ int main(){
   // This will help us to calulate the 'total' sum of a column with all the possible permutations:
   int apSum = ((1+n)*n)/2;
   
-  // These loops are used to traverse each column.
+  // This loop is used to traverse 'total' and 'subtotal', to calculate their difference:
   for(i=0; i<n; i++){
-    
-    // This variable is used to store the sum of all the values of the current column:
-    int sum = 0;
-    
-    // Adding up the values of the column:
-    for (j=0; j<fat-1; j++){
-      
-      sum += m[j][i];
-    }
     
     // I struggled to figure out how to find the sum of the values of a column as if it has all the permutations.
     // Finally, I ended up with this formula: apSum*(fat/n).
     // Then, we just calculate the difference.
-    res.push_back(apSum*(fat/n)-sum);
+    res.push_back(apSum*(fat/n)-subtotal[i]);
   }
 
   // Printint out the result, that is the missing permutation:
